@@ -1,0 +1,31 @@
+services:
+  garrysmod-cli:
+    build: ./src
+    container_name: gkds-game
+    ports:
+      - "27015:27015"
+      - "27015:27015/udp"
+    volumes:
+      - garrysmod-data:/home/steam/gmod
+    tty: true
+    stdin_open: true
+
+  garrysmod-srv:
+    build:
+      context: ./wwwroot
+      args:
+        STEAM_UID: 1000
+        STEAM_GID: 1000
+    container_name: gdks-manager
+    ports:
+      - "8080:80"
+    volumes:
+      - garrysmod-data:/var/www/gmod
+      - /var/run/docker.sock:/var/run/docker.sock
+      - sqlite-data:/var/www/sqlite
+    depends_on:
+      - garrysmod-cli
+
+volumes:
+  garrysmod-data:
+  sqlite-data:

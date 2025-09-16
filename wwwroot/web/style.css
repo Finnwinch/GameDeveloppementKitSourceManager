@@ -1,0 +1,988 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme {
+    background-color: #f5f7fa;
+    color: #1a2732;
+}
+
+header {
+    background: #0d47a1;
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #ffffff;
+    border-bottom: 1px solid #1565c0;
+    user-select: text;
+}
+
+body.light-theme header {
+    background: #0d47a1;
+    color: #fff;
+    border-bottom: 1px solid #1565c0;
+}
+
+nav {
+    width: 260px;
+    background: #1e1e1e;
+    border-right: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 8px;
+    overflow-y: auto;
+    user-select: text;
+    font-size: 0.9rem;
+    color: #bbb;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme nav {
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    color: #333;
+}
+
+nav > header {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #90caf9;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #333;
+}
+
+body.light-theme nav > header {
+    color: #0d47a1;
+    border-bottom: 1px solid #eee;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #999;
+    font-weight: 500;
+}
+
+body.light-theme nav li {
+    color: #555;
+}
+
+nav li.folder::before {
+    content: "📁";
+    font-size: 1rem;
+}
+
+nav li.file::before {
+    content: "📄";
+    font-size: 1rem;
+}
+
+nav li:hover, nav li:focus-within {
+    background-color: #264e94;
+    color: #fff;
+}
+
+body.light-theme nav li:hover, 
+body.light-theme nav li:focus-within {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+nav a {
+    color: inherit;
+    text-decoration: none;
+    flex-grow: 1;
+    display: block;
+    user-select: text;
+}
+
+nav a:focus {
+    outline: 2px solid #90caf9;
+    outline-offset: 2px;
+}
+
+main {
+    flex-grow: 1;
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    user-select: text;
+    background: #1e1e1e;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme main {
+    background: #ffffff;
+    color: #1a2732;
+}
+
+h1 {
+    margin-top: 0;
+    font-weight: 800;
+    color: #90caf9;
+    user-select: text;
+}
+
+body.light-theme h1 {
+    color: #0d47a1;
+}
+
+button {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 10px 24px;
+    margin-right: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(13, 71, 161, 0.3);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    box-shadow: 0 6px 12px rgba(21, 101, 192, 0.5);
+}
+
+button:active {
+    background: linear-gradient(135deg, #124a9e 0%, #0a3b81 100%);
+    box-shadow: 0 2px 6px rgba(10, 59, 129, 0.7);
+    transform: translateY(1px);
+}
+
+button:focus-visible {
+    outline: 3px solid #90caf9;
+    outline-offset: 2px;
+}
+
+#saveBtn {
+    background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+    margin-top: 16px;
+    padding: 12px 32px;
+}
+
+#saveBtn:hover {
+    background: linear-gradient(135deg, #388e3c 0%, #43a047 100%);
+    box-shadow: 0 6px 12px rgba(56, 142, 60, 0.5);
+}
+
+#saveBtn:active {
+    background: linear-gradient(135deg, #27632a 0%, #2e7d32 100%);
+    box-shadow: 0 2px 6px rgba(39, 99, 42, 0.7);
+    transform: translateY(1px);
+}
+
+.path-display {
+    font-size: 0.95rem;
+    color: #90caf9;
+    font-weight: 600;
+    margin-bottom: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: text;
+    border-left: 4px solid #90caf9;
+    padding-left: 12px;
+    max-width: 100%;
+}
+
+body.light-theme .path-display {
+    color: #0d47a1;
+    border-left-color: #0d47a1;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+li {
+    padding: 10px 14px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.25s ease;
+    color: #bbb;
+}
+
+body.light-theme li {
+    border-bottom: 1px solid #bbdefb;
+    color: #555;
+}
+
+li:hover {
+    background-color: #264e94;
+    color: #fff;
+}
+
+body.light-theme li:hover {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+li.folder::before {
+    content: "📁 ";
+}
+
+li.file::before {
+    content: "📄 ";
+}
+
+a {
+    color: #90caf9;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+body.light-theme a {
+    color: #0d47a1;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form#server-control {
+    margin-bottom: 32px;
+}
+
+form#server-control button {
+    margin-right: 16px;
+    font-size: 1.1rem;
+    min-width: 140px;
+    box-shadow: 0 3px 6px rgba(21, 101, 192, 0.3);
+}
+
+body.light-theme form#server-control button {
+    box-shadow: 0 3px 6px rgba(13, 71, 161, 0.3);
+}
+
+#consoleOutput {
+    background: #121212;
+    color: #e0e0e0;
+    padding: 20px;
+    height: 340px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    border-radius: 10px;
+    border: 1.5px solid #333;
+    box-shadow: inset 0 0 10px #000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    user-select: text;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    line-height: 1.4;
+}
+
+body.light-theme #consoleOutput {
+    background: #f9f9f9;
+    color: #1a2732;
+    border: 1.5px solid #ddd;
+    box-shadow: inset 0 0 10px #aaa;
+}
+
+#consoleOutput::-webkit-scrollbar {
+    width: 10px;
+}
+
+#consoleOutput::-webkit-scrollbar-thumb {
+    background-color: #1565c0;
+    border-radius: 6px;
+}
+
+#consoleOutput span {
+    white-space: pre-wrap;
+    font-weight: 700;
+}
+
+#message {
+    margin: 16px 0;
+    color: #90caf9;
+    font-weight: 700;
+    user-select: text;
+}
+
+body.light-theme #message {
+    color: #0d47a1;
+}
+
+#fileEditorPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #121212;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    user-select: text;
+    transition: background-color 0.3s ease;
+}
+
+body.light-theme #fileEditorPopup {
+    background: #ffffff;
+}
+
+#fileEditorHeader {
+    background: #0d47a1;
+    color: white;
+    padding: 12px 24px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.light-theme #fileEditorHeader {
+    background: #0d47a1;
+    color: white;
+}
+
+#fileEditorHeader button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.4rem;
+    cursor: pointer;
+    font-weight: 700;
+    user-select: none;
+}
+
+#fileEditorContainer {
+    flex-grow: 1;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+#editor {
+    flex-grow: 1;
+    border-radius: 8px;
+    box-shadow: inset 0 0 8px #000000cc;
+    background: #1e1e1e;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme #editor {
+    background: #f9f9f9;
+    color: #1a2732;
+    box-shadow: inset 0 0 8px #ccc;
+}
+
+#saveBtn {
+    margin-top: 16px;
+    align-self: flex-start;
+    background: #0d47a1;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: 14px 28px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    user-select: none;
+}
+
+#saveBtn:hover {
+    background: #1565c0;
+}
+
+#cmd-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+#cmdInput {
+  flex: 1;
+  padding: 8px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #555;
+  font-family: monospace;
+  background: #333;
+  color: #eee;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.light-theme #cmdInput {
+  border: 1px solid #ccc;
+  background: #fff;
+  color: #1a2732;
+}
+
+#cmdSend {
+  padding: 8px 16px;
+  border-radius: 0 4px 4px 0;
+  background: #1565c0;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#cmdSend:hover {
+  background: #0d47a1;
+}
+
+body.light-theme #cmdSend {
+  background: #1976d2;
+}
+
+body.light-theme #cmdSend:hover {
+  background: #1565c0;
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(70%);
+}
+#loadingOverlay {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loader {
+    animation: pulse 1s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+.modal-content {
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.modal-content button {
+    margin: 5px;
+}
+button.fake-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: auto;
+    background-color: gray;
+}
+
+.gamemode-grid {
+    max-width: 100%;         /* limite la largeur du conteneur */
+    overflow-x: auto;        /* scroll horizontal activé si nécessaire */
+    overflow-y: hidden;
+    white-space: nowrap;     /* empêche les éléments de passer à la ligne */
+
+    /* Scrollbar styles Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #4a90e2 transparent;
+}
+
+.gamemode-grid form {
+    display: inline-block;   /* rend les formulaires inline pour le scroll horizontal */
+    margin-right: 12px;      /* espace entre les boutons */
+}
+
+/* Scrollbar styles WebKit */
+.gamemode-grid::-webkit-scrollbar {
+    height: 8px;              /* hauteur de la scrollbar horizontale */
+}
+
+.gamemode-grid::-webkit-scrollbar-track {
+    background: transparent;  /* fond de la track */
+}
+
+.gamemode-grid::-webkit-scrollbar-thumb {
+    background-color: #4a90e2; /* couleur de la barre de scroll */
+    border-radius: 4px;        /* arrondi */
+    border: 2px solid transparent; /* espace autour */
+}
+
+.gamemode-grid::-webkit-scrollbar-thumb:hover {
+    background-color: #357ABD; /* couleur au survol */
+}
+
+#header-container.header-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 32px;
+    background: #1a1a1a;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 1px solid #2c2c2c;
+}
+
+body.light-theme #header-container.header-toolbar {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+#header-container h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+    flex-shrink: 0;
+    color: #90caf9;
+}
+
+body.light-theme #header-container h1 {
+    color: #0d47a1;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 12px; /* Ajouté */
+}
+
+#server-control {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+#server-control button {
+    min-width: 120px;
+}
+
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Overlay modale */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    user-select: none;
+    transition: background-color 0.3s ease;
+}
+
+/* Contenu de la modale */
+.compte-popup {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border-radius: 12px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.75);
+    padding: 24px 32px;
+    user-select: text;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header modale */
+.compte-popup h2 {
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #90caf9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Bouton fermeture */
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #90caf9;
+    font-size: 1.4rem;
+    cursor: pointer;
+    font-weight: 700;
+    user-select: none;
+    transition: color 0.3s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #bbdefb;
+}
+
+/* Tableau */
+.compte-popup table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    color: #e0e0e0;
+}
+
+.compte-popup thead tr {
+    background-color: #264e94;
+}
+
+.compte-popup thead th {
+    padding: 12px 10px;
+    font-weight: 700;
+    border-bottom: 2px solid #1565c0;
+    text-align: left;
+}
+
+.compte-popup tbody tr {
+    border-bottom: 1px solid #333;
+    transition: background-color 0.25s ease;
+    cursor: default;
+}
+
+.compte-popup tbody tr:hover {
+    background-color: #264e94;
+    color: #fff;
+}
+
+.compte-popup tbody td {
+    padding: 10px 8px;
+    vertical-align: middle;
+}
+
+/* Boutons actions dans tableau */
+.compte-popup button {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    margin: 0 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    user-select: none;
+}
+
+.compte-popup button:hover {
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+}
+
+.compte-popup button:active {
+    background: linear-gradient(135deg, #124a9e 0%, #0a3b81 100%);
+    transform: translateY(1px);
+}
+
+/* Formulaire de création/modification */
+.compte-popup form {
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 10px;
+    color: #ccc;
+    font-size: 0.95rem;
+    user-select: text;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.compte-popup form input[type="text"],
+.compte-popup form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.compte-popup form input[type="text"]:focus,
+.compte-popup form input[type="password"]:focus {
+    outline: none;
+    border-color: #90caf9;
+    background-color: #262626;
+}
+
+.compte-popup form label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+    color: #90caf9;
+}
+
+.compte-popup form fieldset {
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 12px 16px;
+    max-height: 180px;
+    overflow-y: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.compte-popup form legend {
+    font-weight: 700;
+    color: #90caf9;
+    padding: 0 6px;
+}
+
+.compte-popup form label > input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+/* Bouton garder le mot de passe */
+#keepPasswordBtn {
+    position: absolute;
+    right: 8px;
+    top: 34px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    transition: background-color 0.3s ease;
+}
+
+#keepPasswordBtn:hover {
+    background-color: #43a047;
+}
+
+/* Bouton enregistrer */
+#saveBtn {
+    background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+    color: white;
+    font-weight: 700;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+
+#saveBtn:hover {
+    background: linear-gradient(135deg, #388e3c 0%, #43a047 100%);
+}
+
+#saveBtn:active {
+    background: linear-gradient(135deg, #27632a 0%, #2e7d32 100%);
+    transform: translateY(1px);
+}
+
+/* ======= Thème clair ======= */
+body.light-theme .modal-overlay {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.light-theme .compte-popup {
+    background-color: #fafafa;
+    color: #1a2732;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .compte-popup h2 {
+    color: #0d47a1;
+}
+
+body.light-theme .compte-popup table thead tr {
+    background-color: #bbdefb;
+}
+
+body.light-theme .compte-popup table th {
+    border-bottom: 2px solid #90caf9;
+    color: #0d47a1;
+}
+
+body.light-theme .compte-popup table tbody tr {
+    border-bottom: 1px solid #bbdefb;
+}
+
+body.light-theme .compte-popup table tbody tr:hover {
+    background-color: #bbdefb;
+    color: #0d47a1;
+}
+
+body.light-theme .compte-popup button {
+    background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+    color: #fff;
+}
+
+body.light-theme .compte-popup button:hover {
+    background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+}
+
+body.light-theme .compte-popup form {
+    background-color: #ffffff;
+    color: #1a2732;
+    border: 1px solid #ddd;
+}
+
+body.light-theme .compte-popup form input[type="text"],
+body.light-theme .compte-popup form input[type="password"] {
+    background-color: #fff;
+    color: #1a2732;
+    border: 1px solid #ccc;
+}
+
+body.light-theme .compte-popup form input[type="text"]:focus,
+body.light-theme .compte-popup form input[type="password"]:focus {
+    border-color: #0d47a1;
+    background-color: #e3f2fd;
+}
+
+body.light-theme #keepPasswordBtn {
+    background-color: #388e3c;
+}
+
+body.light-theme #keepPasswordBtn:hover {
+    background-color: #2e7d32;
+}
+
+body.light-theme #saveBtn {
+    background: linear-gradient(135deg, #388e3c 0%, #43a047 100%);
+}
+
+body.light-theme #saveBtn:hover {
+    background: linear-gradient(135deg, #2e7d32 0%, #27632a 100%);
+}
+/* Pour le thead du tableau (en mode sombre) */
+.compte-popup table thead tr {
+  background-color: #264e94 !important; /* important pour overrider le inline style */
+  color: #e0e0e0;
+}
+
+/* En mode clair */
+body.light-theme .compte-popup table thead tr {
+  background-color: #bbdefb !important;
+  color: #0d47a1;
+}
+
+/* Formulaire modale fond clair / sombre */
+.compte-popup form {
+  background-color: #2c2c2c !important; /* sombre */
+  color: #ccc;
+}
+
+body.light-theme .compte-popup form {
+  background-color: #fafafa !important; /* clair */
+  color: #1a2732;
+  border: 1px solid #ddd !important;
+}
+
+/* Inputs formulaire modale */
+.compte-popup form input[type="text"],
+.compte-popup form input[type="password"] {
+  background-color: #1e1e1e !important; /* sombre */
+  color: #e0e0e0 !important;
+  border: 1px solid #555 !important;
+}
+
+body.light-theme .compte-popup form input[type="text"],
+body.light-theme .compte-popup form input[type="password"] {
+  background-color: #fff !important; /* clair */
+  color: #1a2732 !important;
+  border: 1px solid #ccc !important;
+}
+
+/* Boutons modale */
+.compte-popup button {
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%) !important;
+  color: white !important;
+}
+
+body.light-theme .compte-popup button {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%) !important;
+  color: #fff !important;
+}
+
+/* Ligne thead dans le tableau de la modale */
+.compte-popup table thead tr th {
+  border-bottom: 2px solid #1565c0 !important;
+}
+
+/* Texte "Désactivé" et "Activé" dans tbody */
+.compte-popup tbody tr td span[style*="color:red"] {
+  color: #ef5350 !important; /* rouge sombre */
+}
+
+.compte-popup tbody tr td span[style*="color:green"] {
+  color: #66bb6a !important; /* vert */
+}
+
+/* Override styles inline sur <tr> dans thead */
+.compte-popup table thead tr[style] {
+  background-color: unset !important;
+  color: unset !important;
+}
